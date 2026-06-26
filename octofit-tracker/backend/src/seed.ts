@@ -1,8 +1,12 @@
+import dotenv from 'dotenv';
+import { connectToDatabase } from './config/database';
 import User from './models/User';
 import Team from './models/Team';
 import Activity from './models/Activity';
 import Workout from './models/Workout';
 import LeaderboardEntry from './models/LeaderboardEntry';
+
+dotenv.config();
 
 export async function seedDatabase(): Promise<void> {
   const userCount = await User.countDocuments();
@@ -100,4 +104,13 @@ export async function seedDatabase(): Promise<void> {
   ]);
 
   console.log('Database seeded with initial OctoFit data');
+}
+
+async function main(): Promise<void> {
+  await connectToDatabase();
+  await seedDatabase();
+}
+
+if (require.main === module) {
+  void main();
 }
